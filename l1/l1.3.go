@@ -6,14 +6,8 @@ import (
 	"strconv"
 )
 
-func Worker(ch <-chan int, id int) {
-	for data := range ch {
-		fmt.Printf("worker %d: %d\n", id, data)
-	}
-}
-
 // call in main goroutine
-func Producer() {
+func Solve() {
 	if len(os.Args) != 2 {
 		fmt.Println("wrong number of args")
 		return
@@ -34,6 +28,16 @@ func Producer() {
 		go Worker(ch, i)
 	}
 
+	Producer(ch)
+}
+
+func Worker(ch <-chan int, id int) {
+	for data := range ch {
+		fmt.Printf("worker %d: %d\n", id, data)
+	}
+}
+
+func Producer(ch chan int) {
 	for {
 		ch <- 1
 	}
